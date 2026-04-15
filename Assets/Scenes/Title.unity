@@ -285,6 +285,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd02ef122983f104485cd3cdf3819da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetSum: 10
+  scorePerApple: 10
+  appleSpawner: {fileID: 0}
+  uiManager: {fileID: 0}
+  selectionManager: {fileID: 0}
+  timeManager: {fileID: 0}
 --- !u!4 &146973083
 Transform:
   m_ObjectHideFlags: 0
@@ -464,7 +470,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 146973082}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ChangeScene
+        m_MethodName: RestartGame
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

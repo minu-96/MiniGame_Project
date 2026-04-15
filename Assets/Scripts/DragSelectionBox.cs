@@ -1,15 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DragSelectionBox : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Canvas canvas;
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private RectTransform selectionBox;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private CellSpawner appleSpawner;
+    [SerializeField] private GameManager gameManager;
 
-    private RectTransform canvasRect;
-    private Vector2 startLocalPos;
+    private readonly List<Cell> currentSelectedApples = new List<Cell>();
+
+    private Vector2 dragStartScreenPosition;
     private bool isDragging;
+    private RectTransform canvasRect;
 
     private void Awake()
     {
@@ -18,63 +23,136 @@ public class DragSelectionBox : MonoBehaviour
         if (selectionBox != null)
         {
             selectionBox.gameObject.SetActive(false);
-            selectionBox.pivot = new Vector2(0.5f, 0.5f);
         }
     }
 
     private void Update()
     {
-        // 마우스 왼쪽 클릭 시작
+        if (!gameManager.CanInput())
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
-            isDragging = true;
-            selectionBox.gameObject.SetActive(true);
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                Input.mousePosition,
-                canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
-                out startLocalPos
-            );
-
-            selectionBox.anchoredPosition = startLocalPos;
-            selectionBox.sizeDelta = Vector2.zero;
+            BeginDrag();
         }
 
-        // 드래그 중
         if (isDragging && Input.GetMouseButton(0))
         {
-            Vector2 currentLocalPos;
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                Input.mousePosition,
-                canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
-                out currentLocalPos
-            );
-
-            UpdateSelectionBox(startLocalPos, currentLocalPos);
+            UpdateDrag();
         }
 
-        // 드래그 종료
         if (isDragging && Input.GetMouseButtonUp(0))
         {
-            isDragging = false;
-
-            // 필요하면 여기서 선택 판정 처리
-            selectionBox.gameObject.SetActive(false);
+            EndDrag();
         }
     }
 
-    private void UpdateSelectionBox(Vector2 start, Vector2 end)
+    private void BeginDrag()
     {
-        Vector2 center = (start + end) * 0.5f;
+        isDragging = true;
+        dragStartScreenPosition = Input.mousePosition;
+
+        currentSelectedApples.Clear();
+
+        if (selectionBox != null)
+        {
+            selectionBox.gameObject.SetActive(true);
+            UpdateSelectionBoxVisual(dragStartScreenPosition, dragStartScreenPosition);
+        }
+    }
+
+    private void UpdateDrag()
+    {
+        Vector2 currentScreenPosition = Input.mousePosition;
+
+        UpdateSelectionBoxVisual(dragStartScreenPosition, currentScreenPosition);
+        RefreshSelectedApples(dragStartScreenPosition, currentScreenPosition);
+    }
+
+    private void EndDrag()
+    {
+        isDragging = false;
+
+        if (selectionBox != null)
+        {
+            selectionBox.gameObject.SetActive(false);
+        }
+
+        gameManager.EvaluateSelection(new List<Cell>(currentSelectedApples));
+        ClearSelection();
+    }
+
+    private void RefreshSelectedApples(Vector2 startScreen, Vector2 endScreen)
+    {
+        foreach (Cell apple in currentSelectedApples)
+        {
+            if (apple != null)
+            {
+                apple.SetSelected(false);
+            }
+        }
+
+        currentSelectedApples.Clear();
+
+        Vector2 min = Vector2.Min(startScreen, endScreen);
+        Vector2 max = Vector2.Max(startScreen, endScreen);
+
+        List<Cell> allApples = appleSpawner.GetAllApples();
+
+        foreach (Cell apple in allApples)
+        {
+            if (apple == null) continue;
+
+            Vector3 screenPos = mainCamera.WorldToScreenPoint(apple.transform.position);
+
+            if (screenPos.x >= min.x && screenPos.x <= max.x &&
+                screenPos.y >= min.y && screenPos.y <= max.y)
+            {
+                currentSelectedApples.Add(apple);
+                apple.SetSelected(true);
+            }
+        }
+    }
+
+    private void UpdateSelectionBoxVisual(Vector2 startScreen, Vector2 endScreen)
+    {
+        Vector2 startLocal;
+        Vector2 endLocal;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            startScreen,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out startLocal
+        );
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            endScreen,
+            canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera,
+            out endLocal
+        );
+
+        Vector2 center = (startLocal + endLocal) * 0.5f;
         Vector2 size = new Vector2(
-            Mathf.Abs(end.x - start.x),
-            Mathf.Abs(end.y - start.y)
+            Mathf.Abs(endLocal.x - startLocal.x),
+            Mathf.Abs(endLocal.y - startLocal.y)
         );
 
         selectionBox.anchoredPosition = center;
         selectionBox.sizeDelta = size;
+    }
+
+    public void ClearSelection()
+    {
+        foreach (Cell apple in currentSelectedApples)
+        {
+            if (apple != null)
+            {
+                apple.SetSelected(false);
+            }
+        }
+
+        currentSelectedApples.Clear();
     }
 }
