@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Rule")]
     [SerializeField] private int targetSum = 10;
-    [SerializeField] private int scorePerApple = 10;
+    [SerializeField] private int scorePerApple = 1;
 
     [Header("References")]
     [SerializeField] private CellSpawner appleSpawner;
@@ -128,11 +128,15 @@ public class GameManager : MonoBehaviour
     public void RestartGame(string scene)
     {
         SceneManager.LoadScene(scene);
-
-        currentState = GameState.Ready;
-        selectionManager.ClearSelection();
-        appleSpawner.ClearBoard();
-        timeManager.ResetTimer();
-        StartGame();
     }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
 }

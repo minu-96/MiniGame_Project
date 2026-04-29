@@ -13,7 +13,7 @@ public class Cell : MonoBehaviour
 
     [Header("Colors")]
     [SerializeField] private Color defaultColor = Color.white;
-    [SerializeField] private Color selectedColor = Color.yellow;
+    [SerializeField] private Color selectedColor = Color.green;
 
     public void Initialize(int newValue)
     {

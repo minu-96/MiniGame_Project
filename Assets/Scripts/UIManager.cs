@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore(int score)
     {
-        scoreText.text = "Score : " + score;
+        scoreText.text = "" + score;
     }
 
     public void UpdateTimer(float currentTime, float maxTime)
@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
     public void ShowGameOver(int finalScore)
     {
         gameOverPanel.SetActive(true);
-        finalScoreText.text = "Final Score : " + finalScore;
+        finalScoreText.text = "Score : " + finalScore;
     }
 
     public void HideGameOver()
