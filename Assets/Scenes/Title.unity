@@ -336,6 +336,7 @@ GameObject:
   - component: {fileID: 300510162}
   - component: {fileID: 300510161}
   - component: {fileID: 300510160}
+  - component: {fileID: 300510163}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -359,7 +360,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000030518, y: -254}
+  m_AnchoredPosition: {x: 1920, y: -254}
   m_SizeDelta: {x: 150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &300510160
@@ -456,6 +457,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300510158}
   m_CullTransparentMesh: 1
+--- !u!111 &300510163
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300510158}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: b730d4fc798524e1b9c5965e2fe0ab2f, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: b730d4fc798524e1b9c5965e2fe0ab2f, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &325519743
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,6 +633,7 @@ GameObject:
   - component: {fileID: 435995866}
   - component: {fileID: 435995865}
   - component: {fileID: 435995864}
+  - component: {fileID: 435995867}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -638,7 +657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -360}
+  m_AnchoredPosition: {x: 1920, y: -360}
   m_SizeDelta: {x: 150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &435995864
@@ -735,6 +754,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435995862}
   m_CullTransparentMesh: 1
+--- !u!111 &435995867
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435995862}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: b730d4fc798524e1b9c5965e2fe0ab2f, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: b730d4fc798524e1b9c5965e2fe0ab2f, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &506924166
 GameObject:
   m_ObjectHideFlags: 0
