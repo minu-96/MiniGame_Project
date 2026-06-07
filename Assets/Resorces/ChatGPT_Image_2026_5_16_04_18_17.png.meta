@@ -197,7 +197,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ChatGPT_Image_2026_5_16_04_18_17_0: 9109975870168528660
+      ChatGPT_Image_2026_5_16_04_18_17_1: 4758181857484169730
+      ChatGPT_Image_2026_5_16_04_18_17_2: -5933062536400148843
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
