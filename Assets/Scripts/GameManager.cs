@@ -139,4 +139,21 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
+    // 현재 화면 유지하면서 보드/점수/타이머만 리셋
+public void RestartCurrentGame()
+{
+    selectionManager.ClearSelection();
+    appleSpawner.ClearBoard();
+
+    currentScore = 0;
+    currentState = GameState.Playing;
+
+    appleSpawner.SpawnBoard();
+    uiManager.UpdateScore(currentScore);
+    uiManager.HideGameOver();
+
+    timeManager.ResetTimer();
+    timeManager.StartTimer();
+}
+
 }

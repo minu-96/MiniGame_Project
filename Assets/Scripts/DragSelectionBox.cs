@@ -82,37 +82,41 @@ public class DragSelectionBox : MonoBehaviour
         ClearSelection();
     }
 
-    private void RefreshSelectedApples(Vector2 startScreen, Vector2 endScreen)
+private void RefreshSelectedApples(Vector2 startScreen, Vector2 endScreen)
+{
+    foreach (Cell apple in currentSelectedApples)
+        if (apple != null) apple.SetSelected(false);
+
+    currentSelectedApples.Clear();
+
+    Vector2 min = Vector2.Min(startScreen, endScreen);
+    Vector2 max = Vector2.Max(startScreen, endScreen);
+
+    List<Cell> allApples = appleSpawner.GetAllApples();
+
+    foreach (Cell apple in allApples)
     {
-        foreach (Cell apple in currentSelectedApples)
+        if (apple == null) continue;
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(apple.transform.position);
+        if (screenPos.x >= min.x && screenPos.x <= max.x &&
+            screenPos.y >= min.y && screenPos.y <= max.y)
         {
-            if (apple != null)
-            {
-                apple.SetSelected(false);
-            }
-        }
-
-        currentSelectedApples.Clear();
-
-        Vector2 min = Vector2.Min(startScreen, endScreen);
-        Vector2 max = Vector2.Max(startScreen, endScreen);
-
-        List<Cell> allApples = appleSpawner.GetAllApples();
-
-        foreach (Cell apple in allApples)
-        {
-            if (apple == null) continue;
-
-            Vector3 screenPos = mainCamera.WorldToScreenPoint(apple.transform.position);
-
-            if (screenPos.x >= min.x && screenPos.x <= max.x &&
-                screenPos.y >= min.y && screenPos.y <= max.y)
-            {
-                currentSelectedApples.Add(apple);
-                apple.SetSelected(true);
-            }
+            currentSelectedApples.Add(apple);
+            apple.SetSelected(true);
         }
     }
+
+    // ★ 합이 10이면 독감자색으로 덮어쓰기
+    int sum = 0;
+    foreach (var p in currentSelectedApples)
+        if (p != null) sum += p.value;
+
+    if (sum == 10)
+    {
+        foreach (var p in currentSelectedApples)
+            if (p != null) p.SetPoison();
+    }
+}
 
     private void UpdateSelectionBoxVisual(Vector2 startScreen, Vector2 endScreen)
     {
