@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private DragSelectionBox selectionManager;
     [SerializeField] private TimeManager timeManager;
 
+    [Header("런처 연동")]
+    [SerializeField] private int unlockScore = 20;            // 이 점수 이상이면 해금
+    [SerializeField] private string unlockGameName = "MoaMoa"; // 해금할 런처 게임 이름
+    private bool unlocked = false;
+
     private int currentScore;
     private GameState currentState = GameState.Ready;
 
@@ -112,6 +117,13 @@ public class GameManager : MonoBehaviour
     {
         currentScore += amount;
         uiManager.UpdateScore(currentScore);
+
+        // 조건 달성 시 런처 해금 (한 번만)
+        if (!unlocked && currentScore >= unlockScore)
+        {
+            unlocked = true;
+            PotatoUnlock.Unlock(unlockGameName);
+        }
     }
 
     public void EndGameFromTimer()
